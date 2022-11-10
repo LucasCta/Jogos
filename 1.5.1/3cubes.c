@@ -15,7 +15,7 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
 int main (int argc, char* args[]){
     /* INICIALIZACAO */
     SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_Window* win = SDL_CreateWindow("Contando o Tempo",
+    SDL_Window* win = SDL_CreateWindow("3cubes",
                          SDL_WINDOWPOS_UNDEFINED,
                          SDL_WINDOWPOS_UNDEFINED,
                          200, 100, SDL_WINDOW_SHOWN
