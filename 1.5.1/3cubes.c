@@ -1,13 +1,14 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
 
-int espera = 500;
+int espera = 100;
 int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     if (SDL_WaitEventTimeout(evt, espera)){
     	espera -= (SDL_GetTicks() - *ms);
+		if (espera <= 0) espera = 1;
     	return 1;
     } else {
-    	espera = 500;
+    	espera = 100;
     	return 0;
     }
 }
