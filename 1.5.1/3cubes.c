@@ -28,7 +28,8 @@ int main (int argc, char* args[]){
     SDL_Rect k = {40,20,10,10};
     SDL_Rect t = {40,20,10,10};
     SDL_Rect m = {40,20,10,10};
-    while (1) {
+    int running = 1;
+    while (running) {
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
         SDL_RenderClear(ren);
         SDL_SetRenderDrawColor(ren, 0x00,0x00,0xFF,0x00);
@@ -67,6 +68,7 @@ int main (int argc, char* args[]){
             		SDL_DestroyRenderer(ren);
 					SDL_DestroyWindow(win);
 					SDL_Quit();
+					running = 0;
             	}
             } else if (evt.type == SDL_MOUSEMOTION){
             	m.x = evt.button.x;

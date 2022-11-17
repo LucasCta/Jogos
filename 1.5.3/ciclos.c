@@ -28,8 +28,9 @@ int main (int argc, char* args[]){
     SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
    
     /* EXECUÇÃO */				
-	while (1){ 
-	
+	int running = 1;
+    while (running) {
+
     	/* RENDER */
     	SDL_RenderClear(ren);
     	SDL_SetRenderDrawColor(ren, 0x20,0x20,0x50,0x00);
@@ -59,6 +60,7 @@ int main (int argc, char* args[]){
             		SDL_DestroyRenderer(ren);
 					SDL_DestroyWindow(win);
 					SDL_Quit();
+					running = 0;
             	}
             }
         } else {
@@ -71,9 +73,4 @@ int main (int argc, char* args[]){
 		
 	}
 
-	
-    /* FINALIZACAO */
-    SDL_DestroyRenderer(ren);
-    SDL_DestroyWindow(win);
-    SDL_Quit();
 }
