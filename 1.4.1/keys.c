@@ -20,8 +20,9 @@ int main (int argc, char* args[])
     SDL_Rect r[10];
     int colors[10][3];
     SDL_Rect player = {40,20,10,10};
-
-    while (1) {
+	
+	int running = 1;
+    while (running) {
 
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
         SDL_RenderClear(ren);
@@ -58,18 +59,13 @@ int main (int argc, char* args[])
                         player.x += 5;
                         if (player.x > 190) player.x = 190;
                         break;
-                    default:
-                        if (state[SDL_SCANCODE_LALT] && state[SDL_SCANCODE_F4]) {
-			                 SDL_DestroyRenderer(ren);
-	                         SDL_DestroyWindow(win);
-                             SDL_Quit();
-		                } break;
                 }
             case SDL_WINDOWEVENT:
                 if (SDL_WINDOWEVENT_CLOSE == evt.window.event){
             		SDL_DestroyRenderer(ren);
 					SDL_DestroyWindow(win);
 					SDL_Quit();
+					running = 0;
                 } break;
             case SDL_MOUSEBUTTONDOWN:
                 if (SDL_BUTTON_LEFT == evt.button.button && rCont < 10){
@@ -79,6 +75,7 @@ int main (int argc, char* args[])
                     } r[rCont] = temp; rCont += 1;             
 			    } break;
         }
+
     }
     
 }
