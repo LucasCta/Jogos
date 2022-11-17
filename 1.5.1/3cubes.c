@@ -23,6 +23,7 @@ int main (int argc, char* args[]){
     SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
 
     /* EXECUÇÃO */
+	int v[2] = {2,2};
     SDL_Rect k = {40,20,10,10};
     SDL_Rect t = {40,20,10,10};
     SDL_Rect m = {40,20,10,10};
@@ -43,17 +44,21 @@ int main (int argc, char* args[]){
         if (isevt){
             if (evt.type == SDL_KEYDOWN){
                 switch (evt.key.keysym.sym){
-                    case SDLK_UP:
+                     case SDLK_UP:
                         k.y -= 5;
+                        if (k.y < 0) k.y = 0;
                         break;
                     case SDLK_DOWN:
                         k.y += 5;
+                        if (k.y > 90) k.y = 90;
                         break;
                     case SDLK_LEFT:
                         k.x -= 5;
+                        if (k.x < 0) k.x = 0;
                         break;
                     case SDLK_RIGHT:
                         k.x += 5;
+                        if (k.x > 190) k.x = 190;
                         break;
                 }
             } else if (evt.type == SDL_WINDOWEVENT){
@@ -65,11 +70,17 @@ int main (int argc, char* args[]){
             } else if (evt.type == SDL_MOUSEMOTION){
             	m.x = evt.button.x;
             	m.y = evt.button.y;
+				if (m.y > 90) m.y = 90;
+				else if (m.x > 190) m.x = 190;
             }
         } else {
-            t.x += 2;
-            t.y += 2;
+			t.x += v[0]; t.y += v[1];
+            if (t.x >= 190) v[0] = -2;
+			else if (t.x <= 0) v[0] = 2;
+            if (t.y >= 90) v[1] = -2;
+			else if (t.y <= 0) v[1] = 2;
         }
+
     }
 }
 
