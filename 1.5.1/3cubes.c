@@ -1,14 +1,15 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-int espera = 100;
 int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
-    if (SDL_WaitEventTimeout(evt, espera)){
-    	espera -= (SDL_GetTicks() - *ms);
-		if (espera < 0) espera = 0;
-    	return 1;
+    Uint32 antes = SDL_GetTicks();
+    if (SDL_WaitEventTimeout(evt, *ms)) {
+    	int temp = *ms - (SDL_GetTicks() - antes);
+		*ms = MAX(0, temp);
+		return 1;
     } else {
-    	espera = 100;
+    	*ms = 100; 
     	return 0;
     }
 }
@@ -29,6 +30,7 @@ int main (int argc, char* args[]){
     SDL_Rect t = {40,20,10,10};
     SDL_Rect m = {40,20,10,10};
     int running = 1;
+    int espera = 100;
     while (running) {
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
         SDL_RenderClear(ren);
@@ -41,8 +43,7 @@ int main (int argc, char* args[]){
         SDL_RenderPresent(ren);
 
         SDL_Event evt;
-        Uint32 time = SDL_GetTicks();
-        int isevt = AUX_WaitEventTimeoutCount(&evt, &time);
+        int isevt = AUX_WaitEventTimeoutCount(&evt, &espera);
         if (isevt){
             if (evt.type == SDL_KEYDOWN){
                 switch (evt.key.keysym.sym){

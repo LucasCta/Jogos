@@ -1,15 +1,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdio.h>
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
-int espera = 400;
 int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
-    if (SDL_WaitEventTimeout(evt, espera)){
-    	espera -= (SDL_GetTicks() - *ms);
-		if (espera < 0) espera = 0;
-    	return 1;
+    Uint32 antes = SDL_GetTicks();
+    if (SDL_WaitEventTimeout(evt, *ms)) {
+    	int temp = *ms - (SDL_GetTicks() - antes);
+		*ms = MAX(0, temp);
+		return 1;
     } else {
-    	espera = 400;
+    	*ms = 400; 
     	return 0;
     }
 }
@@ -33,10 +34,11 @@ int main (int argc, char* args[]){
 		v[i][0] = rand()%100;
 		v[i][1] = rand()%100;
 	}
-
+	
 	int running = 1;
+	int espera = 400;
     while (running) {
-
+    
     	/* RENDER */
     	SDL_RenderClear(ren);
     	SDL_SetRenderDrawColor(ren, 0x20,0x20,0x50,0x00);
@@ -58,8 +60,7 @@ int main (int argc, char* args[]){
 		
 		/* EVENTOS */
 		SDL_Event evt;
-        Uint32 time = SDL_GetTicks();
-        int isevt = AUX_WaitEventTimeoutCount(&evt, &time);
+        int isevt = AUX_WaitEventTimeoutCount(&evt, &espera);
         if (isevt){
         	if (evt.type == SDL_WINDOWEVENT){
             	if (SDL_WINDOWEVENT_CLOSE == evt.window.event){
