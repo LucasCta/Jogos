@@ -9,7 +9,6 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
 		*ms = MAX(0, temp);
 		return 1;
     } else {
-    	*ms = 500; 
     	return 0;
     }
 }
@@ -65,6 +64,7 @@ int main (int argc, char* args[]){
         } else {
             if (k.x < 190) k.x += 2;
             if (k.y < 90) k.y += 2;
+			ms = 500; 
         }
     }
 	
