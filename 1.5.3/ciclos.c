@@ -10,7 +10,6 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
 		*ms = MAX(0, temp);
 		return 1;
     } else {
-    	*ms = 400; 
     	return 0;
     }
 }
@@ -71,7 +70,8 @@ int main (int argc, char* args[]){
 			int j = 0; for (j; j<100; j++){
 			   v[j][0] += 1; v[j][1] += 3;
 			   if (v[j][0] >= 100) v[j][0] -= 100;
-			   if (v[j][1] >= 100) v[j][1] -= 100;
+			   if (v[j][1] >= 100) v[j][1] -= 100;	
+    		   *ms = 400; 
 			} 
 		}
 		
