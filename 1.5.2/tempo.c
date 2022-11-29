@@ -64,7 +64,7 @@ int main (int argc, char* args[]){
         } else {
             if (k.x < 190) k.x += 2;
             if (k.y < 90) k.y += 2;
-			ms = 500; 
+			espera = 500; 
         }
     }
 	

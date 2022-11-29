@@ -71,7 +71,7 @@ int main (int argc, char* args[]){
 			   v[j][0] += 1; v[j][1] += 3;
 			   if (v[j][0] >= 100) v[j][0] -= 100;
 			   if (v[j][1] >= 100) v[j][1] -= 100;	
-			} ms = 400; 
+			} espera = 400; 
 		}
 		
 	}
