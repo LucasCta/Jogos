@@ -2,6 +2,12 @@
 #include <SDL2/SDL.h>
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
+typedef struct {
+  SDL_Rect r;
+  int rgb[3];
+  int pos;
+} Player;
+
 int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     Uint32 antes = SDL_GetTicks();
     if (SDL_WaitEventTimeout(evt, *ms)) {
@@ -11,33 +17,29 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     } else return 0;
 }
 
-void desenhaCorrida(SDL_Rect* k, SDL_Rect* t, SDL_Rect* m, SDL_Rect* l, SDL_Renderer* ren){
+void desenhaCorrida(Player p[], SDL_Renderer* ren){
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
     SDL_RenderClear(ren);
+	SDL_Rect line = {180,0,5,100};
 	SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0x00,0x00);
-    SDL_RenderFillRect(ren, l);
-    SDL_SetRenderDrawColor(ren, 0x00,0x00,0xFF,0x00);
-    SDL_RenderFillRect(ren, k);
-    SDL_SetRenderDrawColor(ren, 0x00,0xFF,0x00,0x00);
-    SDL_RenderFillRect(ren, t);
-    SDL_SetRenderDrawColor(ren, 0xFF,0x00,0x00,0x00);
-    SDL_RenderFillRect(ren, m);
-	SDL_RenderPresent(ren);
+    SDL_RenderFillRect(ren, &line);
+	int i; for (i = 0; i < 3; i++){
+		SDL_SetRenderDrawColor(ren, p[i].rgb[0],p[i].rgb[1],p[i].rgb[2],0x00);
+    	SDL_RenderFillRect(ren, &p[i].r);
+	} SDL_RenderPresent(ren);
 	return;
 }
 
-void desenhaFinal(SDL_Rect* k, SDL_Rect* t, SDL_Rect* m, SDL_Rect* l, SDL_Renderer* ren){
+void desenhaFinal(Player p[], SDL_Renderer* ren){
 	SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
     SDL_RenderClear(ren);
-	SDL_Rect ouro = {20,20,20,50};
-	SDL_RenderFillRect(ren, &ouro);
-	SDL_Rect prata = {40,30,20,40};
-	SDL_RenderFillRect(ren, &prata);
-	SDL_Rect bronze = {60,40,20,30};
-	SDL_RenderFillRect(ren, &bronze);
+	int i; for (i = 0; i < 3; i++){
+		SDL_SetRenderDrawColor(ren, p[i].rgb[0],p[i].rgb[1],p[i].rgb[2],0x00);
+    	SDL_Rect pillar = {70+(i*20),30+((p[i].pos-1)*10),20,50-(p[i].pos*10)};
+		SDL_RenderFillRect(ren, &pillar);
+	} SDL_RenderPresent(ren);
 	return;
 }
-
 
 int main (int argc, char* args[]){
 
@@ -51,29 +53,32 @@ int main (int argc, char* args[]){
     SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
 
     /* EXECUÇÃO */
-
+	int x, y;
 	int tela = 0;
+    int final = 0;
     int espera = 100;
+	int position = 0;
+	Player p[3]; int i;
+	for (i = 0; i < 3; i++) {
+		SDL_Rect temp = {40,20+(i*20),10,10};
+		p[i].r = temp;
+		p[i].rgb[0] = 0x00;
+		p[i].rgb[1] = 0x00;
+		p[i].rgb[2] = 0x00;
+		p[i].rgb[i] = 0xFF;
+		p[i].pos = 0;
+	} int running = 1;
 
-	int vencedor = 0;
-	int vencedores[] = {0,0,0};
-    SDL_Rect k = {40,20,10,10};
-    SDL_Rect t = {40,40,10,10};
-    SDL_Rect m = {40,60,10,10};
-	SDL_Rect l = {180,0,5,100};
-	
-    int running = 1;
     while (running) {
 		
 		switch (tela){
 			case 0:
-        		desenhaCorrida(&k,&t,&m,&l,ren);
+        		desenhaCorrida(p,ren);
 				break;
 			case 1:
-				desenhaFinal(&k,&t,&m,&l,ren);
+				desenhaFinal(p,ren);
 				break;		
 		}
-
 
         SDL_Event evt;
         if (AUX_WaitEventTimeoutCount(&evt, &espera)){
@@ -81,30 +86,36 @@ int main (int argc, char* args[]){
                 case SDL_KEYDOWN:
                     switch (evt.key.keysym.sym) {
                         case SDLK_LEFT:
-                            k.x -= 2;
+                            p[0].r.x -= 2;
                             break;
                         case SDLK_RIGHT:
-                            k.x += 2;
+                            p[0].r.x += 2;
                             break;
-                    }
+                    } break;
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event) running = 0;
                     break;
 				case SDL_MOUSEMOTION:
-		        	m.x = evt.button.x;
+					SDL_GetMouseState(&x, &y);
+					if (p[1].r.x < x && p[1].r.x+10 > x && p[1].r.y < y && p[1].r.y+10 > y)
+		        		p[1].r.x = x-5;
+					break;
             }
         } else {
-			t.x += 2;
+			p[2].r.x += 3;
             espera = 100; 
         }
 		
-		if (vencedor != 0) {
-		if (k.x >= 195) vencedor = 1;
-		else if (m.x >= 195) vencedor = 2;
-		else if (t.x >= 195) vencedor = 3;
-		} if (k.x >= 195 && m.x >= 195 && t.x >= 195) tela = 1;
+		for (i = 0; i < 3; i++){
+			if (p[i].pos == 0){
+				if (p[i].r.x >= 185)
+					p[i].pos = ++position;
+			} else { 
+				if (++final == 3)
+					tela = 1;
+			}
+		} final = 0;
 		
-		printf("%d",tela);
     }
 
 	/* FINALIZACAO */
