@@ -94,10 +94,10 @@ int main (int argc, char* args[]){
                     case SDL_KEYDOWN:
                         switch (evt.key.keysym.sym) {
                             case SDLK_LEFT:
-                                p[0].r.x -= 2;
+                                if (p[0].r.x < 185) p[0].r.x -= 2;
                                 break;
                             case SDLK_RIGHT:
-                                p[0].r.x += 2;
+                                if (p[0].r.x < 185) p[0].r.x += 2;
                                 break;
                         } break;
                     case SDL_WINDOWEVENT:
@@ -110,12 +110,12 @@ int main (int argc, char* args[]){
 				        int newX, newY;
 					    SDL_GetMouseState(&newX, &newY);
 					    if (p[1].r.x < x && p[1].r.x+10 > x && p[1].r.y < y && p[1].r.y+10 > y)
-		            		p[1].r.x += (newX-x);
+		            		if (p[1].r.x < 185) p[1].r.x += (newX-x);
 					    x = newX; y = newY; 
 					    break;
                 }
             } else {
-			    p[2].r.x += 3;
+			    if (p[2].r.x < 185) p[2].r.x += 3;
                 espera = 100; 
             }
 		    for (i = 0; i < 3; i++){
