@@ -17,7 +17,7 @@ int main (int argc, char* args[]){
 
     /* INICIALIZACAO */
     SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_Window* win = SDL_CreateWindow("race",
+    SDL_Window* win = SDL_CreateWindow("drag",
                          SDL_WINDOWPOS_UNDEFINED,
                          SDL_WINDOWPOS_UNDEFINED,
                          200, 100, SDL_WINDOW_SHOWN
@@ -54,6 +54,7 @@ int main (int argc, char* args[]){
         
         SDL_Event evt;	
 	    if (AUX_WaitEventTimeoutCount(&evt, &espera)){
+	        contEspera = 0;
             switch (evt.type){
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
