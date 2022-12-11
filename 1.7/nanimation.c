@@ -15,7 +15,18 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     } else return 0;
 }
 
-//void desenhaBoneco(int v[100][2], SDL_Renderer* ren){}
+void desenhaBoneco(int v[100][2], int cut, SDL_Texture* img, SDL_Renderer* ren){
+    SDL_SetRenderDrawColor(ren, 0x20,0x20,0x50,0x00); 
+    SDL_RenderClear(ren);
+    SDL_Rect snowman = (SDL_Rect){1,1,100,100};
+    SDL_Rect snowmanStage = (SDL_Rect){cut,1,100,100};
+	SDL_RenderCopy(ren, img, &snowmanStage, &snowman);
+    SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
+	int i = 0; 
+	for (i; i<100; i++)
+	    SDL_RenderDrawPoint(ren, v[i][0],v[i][1]);
+    SDL_RenderPresent(ren); 
+}
 
 int main (int argc, char* args[]){
 
@@ -47,16 +58,7 @@ int main (int argc, char* args[]){
     while (running) {
     
     	/* RENDER */
-	    SDL_SetRenderDrawColor(ren, 0x20,0x20,0x50,0x00); 
-	    SDL_RenderClear(ren);
-        SDL_Rect snowman = (SDL_Rect){1,1,100,100};
-        SDL_Rect snowmanStage = (SDL_Rect){cut,1,100,100};
-		SDL_RenderCopy(ren, img, &snowmanStage, &snowman);
-	    SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
-    	int i = 0; 
-    	for (i; i<100; i++)
-		    SDL_RenderDrawPoint(ren, v[i][0],v[i][1]);
-	    SDL_RenderPresent(ren); 
+	    desenhaBoneco(v, cut, img, ren);
 		
 		/* EVENTOS */
 		SDL_Event evt;
