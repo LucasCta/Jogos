@@ -52,6 +52,7 @@ int main (int argc, char* args[]){
         
         SDL_Event evt;	
 	    if (AUX_WaitEventTimeoutCount(&evt, &espera)){
+	        contEspera = 0;
             switch (evt.type){
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
@@ -73,7 +74,9 @@ int main (int argc, char* args[]){
                     dragged = 0;
 				    break;
 				case SDL_MOUSEBUTTONUP:
-				    if (!dragged && clicked) 
+				    if (!dragged && clicked && cur_state == selected)
+				        cur_state = unselected;
+				    else if (!dragged && clicked) 
 				        cur_state = click;
 				    else if (dragged && clicked)
 				        cur_state = dropped;
