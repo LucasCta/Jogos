@@ -33,6 +33,7 @@ int main (int argc, char* args[]){
     int pState = idle;
     int pSpeed = 5;
     
+    int x, y;
     int screen = menu;
     int espera = 100;
     
@@ -43,27 +44,33 @@ int main (int argc, char* args[]){
     while (screen < fim) {
     
         while (screen == menu){
-        
             SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
             SDL_RenderClear(ren);
-        
-            SDL_Rect recPlay = {500,500,200,200};
             SDL_Color grey = {125,125,125,125};
-            struct SDL_Surface * play = TTF_RenderText_Solid(font,"Play",grey);    
+            SDL_Rect rectPlay = {540,300,200,200};
+            SDL_Rect rectQuit = {540,500,200,200};
+            struct SDL_Surface * play = TTF_RenderText_Solid(font,"Play",grey); 
+            struct SDL_Surface * quit = TTF_RenderText_Solid(font,"Quit",grey);    
             struct SDL_Texture * playBut = SDL_CreateTextureFromSurface(ren,play);
-            SDL_RenderCopy(ren,playBut,NULL,&recPlay);
-	
+            struct SDL_Texture * quitBut = SDL_CreateTextureFromSurface(ren,quit);
+            SDL_RenderCopy(ren,playBut,NULL,&rectPlay);
+	        SDL_RenderCopy(ren,quitBut,NULL,&rectQuit);
 		    SDL_RenderPresent(ren);
-		    
 		    SDL_Event evt;
             int isevt = AUX_WaitEventTimeoutCount(&evt, &espera);
             if (isevt){
                 if (evt.type == SDL_WINDOWEVENT){
                 	if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
                 	    screen = fim;
-                } 
+                } else if (evt.type == SDL_MOUSEBUTTONDOWN){
+                    SDL_GetMouseState(&x,&y);
+                    if (rectPlay.x < x && rectPlay.x + 200 > x && rectPlay.y < y && rectPlay.y + 200 > y){
+                        screen = telaInicial;
+                    } else if (rectQuit.x < x && rectQuit.x + 200 > x && rectQuit.y < y && rectQuit.y + 200 > y){
+                        screen = fim;
+                    }
+                }
             } else espera = 100;
-            
         }
         
         while (screen == telaInicial){
@@ -102,6 +109,7 @@ int main (int argc, char* args[]){
     }
 
 	/* FINALIZACAO */
+	TTF_CloseFont(font);
 	SDL_DestroyRenderer(ren);
 	SDL_DestroyWindow(win);
 	SDL_Quit();
