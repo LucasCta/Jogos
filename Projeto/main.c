@@ -16,9 +16,9 @@ enum tela {menu=0,telaInicial,fim};
 
 int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     Uint32 antes = SDL_GetTicks();
+    SDL_FlushEvent(SDL_MOUSEMOTION);
     if (SDL_WaitEventTimeout(evt, *ms)) {
-    	int temp = *ms - (SDL_GetTicks() - antes);
-		*ms = MAX(0, temp);
+    	*ms = MAX(0, *ms - (int)(SDL_GetTicks() - antes));
 		return 1;
     } return 0;
 }
@@ -55,6 +55,8 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
     menuTex[2].color = grey;
     menuTex[2].rect = (SDL_Rect) {540,500,200,200};
 
+    Uint32 antes = SDL_GetTicks();
+    
     while (*screen == menu){
     
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
@@ -70,8 +72,11 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
         
 	    SDL_RenderPresent(ren);
 	    
-	    SDL_Event evt;
-        if (AUX_WaitEventTimeoutCount(&evt, espera)){
+	    *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
+	    SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
+	    antes = SDL_GetTicks();
+	    
+        if (isevt){
             switch (evt.type) {
                 case SDL_WINDOWEVENT:
                 	if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
@@ -115,6 +120,8 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     int pState = idle;
     int pSpeed = 5;
     
+    Uint32 antes = SDL_GetTicks();
+     
     while (*screen == telaInicial){
     
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
@@ -123,8 +130,11 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         SDL_RenderFillRect(ren, &player);
         SDL_RenderPresent(ren);
         
-        SDL_Event evt;
-        if (AUX_WaitEventTimeoutCount(&evt, espera)){
+        *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
+	    SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
+	    antes = SDL_GetTicks();
+	    
+        if (isevt){
             if (evt.type == SDL_KEYDOWN){
                 switch (evt.key.keysym.sym){
                      case SDLK_w:
