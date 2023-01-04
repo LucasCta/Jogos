@@ -135,33 +135,36 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
 	    antes = SDL_GetTicks();
 	    
         if (isevt){
-            if (evt.type == SDL_KEYDOWN){
-                switch (evt.key.keysym.sym){
-                     case SDLK_w:
-                        player.y = MAX(player.y - pSpeed, 0);
-                        break;
-                    case SDLK_s:
-                        player.y = MIN(player.y + pSpeed, h - player.h);
-                        break;
-                    case SDLK_a:
-                        player.x = MAX(player.x - pSpeed, 0);
-                        break;
-                    case SDLK_d:
-                        player.x = MIN(player.x + pSpeed, w - player.w);
-                        break;
-                    case SDLK_LSHIFT:
-                        pSpeed = 10;
-                        break;
-                   case SDLK_ESCAPE:
-                        *screen = menu;
-                        break;
-                }
-            } else if (evt.type == SDL_KEYUP){
-               if (evt.key.keysym.sym == SDLK_LSHIFT)
-                   pSpeed = 5;
-            } else if (evt.type == SDL_WINDOWEVENT){
-            	if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
-				    *screen = fim;
+             switch (evt.type){
+                case SDL_KEYDOWN: 
+                    switch (evt.key.keysym.sym){
+                         case SDLK_w:
+                            player.y = MAX(player.y - pSpeed, 0);
+                            break;
+                        case SDLK_s:
+                            player.y = MIN(player.y + pSpeed, h - player.h);
+                            break;
+                        case SDLK_a:
+                            player.x = MAX(player.x - pSpeed, 0);
+                            break;
+                        case SDLK_d:
+                            player.x = MIN(player.x + pSpeed, w - player.w);
+                            break;
+                        case SDLK_LSHIFT:
+                            pSpeed = 10;
+                            break;
+                       case SDLK_ESCAPE:
+                            *screen = menu;
+                            break;
+                    } break;
+                case SDL_SDL_KEYUP:
+                    if (evt.key.keysym.sym == SDLK_LSHIFT)
+                        pSpeed = 5;
+                    break;
+                case SDL_WINDOWEVENT:
+                    if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
+				        *screen = fim;
+				    break;
             } 
         } else *espera = 20;
         
