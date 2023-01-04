@@ -47,13 +47,13 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
     menuTex[1].text = "Jogar";
     menuTex[1].font = font;
     menuTex[1].color = grey;
-    menuTex[1].rect = (SDL_Rect) {540,300,200,200};    
+    menuTex[1].rect = (SDL_Rect) {540,300,250,200};    
     
     menuTex[2].text = malloc(sizeof("Sair"));
     menuTex[2].text = "Sair";
     menuTex[2].font = font;
     menuTex[2].color = grey;
-    menuTex[2].rect = (SDL_Rect) {540,500,200,200};
+    menuTex[2].rect = (SDL_Rect) {540,500,250,200};
 
     Uint32 antes = SDL_GetTicks();
     
@@ -157,7 +157,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                             *screen = menu;
                             break;
                     } break;
-                case SDL_SDL_KEYUP:
+                case SDL_KEYUP:
                     if (evt.key.keysym.sym == SDLK_LSHIFT)
                         pSpeed = 5;
                     break;
