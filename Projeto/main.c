@@ -1,8 +1,17 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
+
+typedef struct {
+    SDL_Rect rect;
+    SDL_Texture * sprite;
+    SDL_Rect sprite_cut;
+    int state;
+    int speed;
+} character;
 
 typedef struct {
     char * text;
@@ -112,13 +121,9 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
 	
 }
 
-void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera) {
+void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, character * player) {
 
     int w, h; SDL_GetWindowSize(win, &w, &h);
-    
-    SDL_Rect player = {40,20,100,100};
-    int pState = idle;
-    int pSpeed = 5;
     
     Uint32 antes = SDL_GetTicks();
      
@@ -126,8 +131,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
         SDL_RenderClear(ren);
-        SDL_SetRenderDrawColor(ren, 0x00,0x00,0xFF,0x00);
-        SDL_RenderFillRect(ren, &player);
+        SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
         SDL_RenderPresent(ren);
         
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
@@ -139,19 +143,31 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                 case SDL_KEYDOWN: 
                     switch (evt.key.keysym.sym){
                          case SDLK_w:
-                            player.y = MAX(player.y - pSpeed, 0);
+                            if (player->sprite_cut.y == 512)
+                                player->sprite_cut.x = (player->sprite_cut.x + 64) % 576;
+                            player->sprite_cut.y = 512;
+                            player->rect.y = MAX(player->rect.y - player->speed, 0);             
                             break;
                         case SDLK_s:
-                            player.y = MIN(player.y + pSpeed, h - player.h);
+                            if (player->sprite_cut.y == 640)
+                                player->sprite_cut.x = (player->sprite_cut.x + 64) % 576;
+                            player->sprite_cut.y = 640;
+                            player->rect.y = MIN(player->rect.y + player->speed, h - player->rect.h);
                             break;
                         case SDLK_a:
-                            player.x = MAX(player.x - pSpeed, 0);
+                            if (player->sprite_cut.y == 576)
+                                player->sprite_cut.x = (player->sprite_cut.x + 64) % 576;
+                            player->sprite_cut.y = 576;
+                            player->rect.x = MAX(player->rect.x - player->speed, 0);
                             break;
                         case SDLK_d:
-                            player.x = MIN(player.x + pSpeed, w - player.w);
+                            if (player->sprite_cut.y == 704)
+                                player->sprite_cut.x = (player->sprite_cut.x + 64) % 576;
+                            player->sprite_cut.y = 704;
+                            player->rect.x = MIN(player->rect.x + player->speed, w - player->rect.w);
                             break;
                         case SDLK_LSHIFT:
-                            pSpeed = 10;
+                            player->speed = 10;
                             break;
                        case SDLK_ESCAPE:
                             *screen = menu;
@@ -159,7 +175,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                     } break;
                 case SDL_KEYUP:
                     if (evt.key.keysym.sym == SDLK_LSHIFT)
-                        pSpeed = 5;
+                        player->speed = 5;
                     break;
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
@@ -184,6 +200,13 @@ int main (int argc, char* args[]){
 
     /* EXECUÇÃO */
     
+    character * player = malloc(sizeof(*player));
+    player->rect = (SDL_Rect) {64, 64, 64, 64};
+	player->sprite = IMG_LoadTexture(ren, "images/player.png");
+    player->sprite_cut = (SDL_Rect) {0, 512, 64, 64};
+    player->state = idle;
+    player->speed = 5;
+    
     int screen = menu;
     int espera = 100;
     
@@ -193,7 +216,7 @@ int main (int argc, char* args[]){
             case menu:
                 menuRen(ren,&screen,&espera);
             case telaInicial:  
-                telaInicialRen(ren,win,&screen,&espera);
+                telaInicialRen(ren,win,&screen,&espera,player);
         } 
     }
 
