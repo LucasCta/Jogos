@@ -27,8 +27,8 @@ int AUX_WaitEventTimeoutCount(SDL_Event* evt, Uint32* ms){
     Uint32 antes = SDL_GetTicks();
     SDL_FlushEvent(SDL_MOUSEMOTION);
     if (SDL_WaitEventTimeout(evt, *ms)) {
-    	*ms = MAX(0, *ms - (int)(SDL_GetTicks() - antes));
-		return 1;
+        *ms = MAX(0, *ms - (int)(SDL_GetTicks() - antes));
+        return 1;
     } return 0;
 }
 
@@ -79,29 +79,29 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
             SDL_FreeSurface(tempSur); SDL_DestroyTexture(tempTex);
         }
         
-	    SDL_RenderPresent(ren);
-	    
-	    *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
-	    SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
-	    antes = SDL_GetTicks();
-	    
+        SDL_RenderPresent(ren);
+        
+        *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
+        SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
+        antes = SDL_GetTicks();
+        
         if (isevt){
             switch (evt.type) {
                 case SDL_WINDOWEVENT:
-                	if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
-                	    *screen = fim;
-                	break;
+                    if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
+                        *screen = fim;
+                    break;
                 case SDL_MOUSEMOTION:
                     SDL_GetMouseState(&x,&y);
                     menuTex[1].color = grey;
                     menuTex[2].color = grey;
-				    if (menuTex[1].rect.x < x && menuTex[1].rect.x + 200 > x && 
-				    menuTex[1].rect.y < y && menuTex[1].rect.y + 200 > y)
+                    if (menuTex[1].rect.x < x && menuTex[1].rect.x + 200 > x && 
+                    menuTex[1].rect.y < y && menuTex[1].rect.y + 200 > y)
                         menuTex[1].color = black;
                     else if (menuTex[2].rect.x < x && menuTex[2].rect.x + 200 > x && 
                     menuTex[2].rect.y < y && menuTex[2].rect.y + 200 > y)
                         menuTex[2].color = black;
-				    break;
+                    break;
                 case SDL_MOUSEBUTTONDOWN:
                     SDL_GetMouseState(&x,&y);
                     if (menuTex[1].rect.x < x && menuTex[1].rect.x + 200 > x && 
@@ -116,9 +116,9 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
         
     }
     
-	TTF_CloseFont(font);
-	free(menuTex);
-	
+    TTF_CloseFont(font);
+    free(menuTex);
+    
 }
 
 void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, character * player) {
@@ -135,9 +135,9 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         SDL_RenderPresent(ren);
         
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
-	    SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
-	    antes = SDL_GetTicks();
-	    
+        SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
+        antes = SDL_GetTicks();
+        
         if (isevt){
              switch (evt.type){
                 case SDL_KEYDOWN: 
@@ -179,8 +179,8 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                     break;
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
-				        *screen = fim;
-				    break;
+                        *screen = fim;
+                    break;
             } 
         } else *espera = 20;
         
@@ -195,14 +195,14 @@ int main (int argc, char* args[]){
     SDL_Window* win = SDL_CreateWindow("Detalhes",SDL_WINDOWPOS_UNDEFINED
                                                  ,SDL_WINDOWPOS_UNDEFINED
                                                                 ,1280,720
-                                                  ,SDL_WINDOW_FULLSCREEN);
+                                                  ,SDL_WINDOW_BORDERLESS);
     SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
 
     /* EXECUÇÃO */
     
     character * player = malloc(sizeof(*player));
     player->rect = (SDL_Rect) {64, 64, 64, 64};
-	player->sprite = IMG_LoadTexture(ren, "images/player.png");
+    player->sprite = IMG_LoadTexture(ren, "images/player.png");
     player->sprite_cut = (SDL_Rect) {0, 512, 64, 64};
     player->state = idle;
     player->speed = 5;
@@ -220,10 +220,10 @@ int main (int argc, char* args[]){
         } 
     }
 
-	/* FINALIZACAO */
-	SDL_DestroyRenderer(ren);
-	SDL_DestroyWindow(win);
-	SDL_Quit();
+    /* FINALIZACAO */
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(win);
+    SDL_Quit();
 
 }
 
