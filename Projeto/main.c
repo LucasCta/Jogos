@@ -17,7 +17,7 @@ typedef struct {
     SDL_Rect rect;
     SDL_Texture * sprite;
     SDL_Rect sprite_cut;
-    screenTex * dialog;
+    char ** dialog;
     int state;
     int speed;
 } character;
@@ -140,6 +140,10 @@ void drawBackground(SDL_Renderer* ren, background * bg){
     }
 }
 
+int RectInRect (SDL_Rect* p, SDL_Rect* r) {
+	return (!(p->x + p->w < r->x || p->x > r->x + r->w)&&!(p->y + p->h < r->y || p->y > r->y + r->h));
+}
+
 void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, character * player) {
 
     int i, j;
@@ -153,23 +157,18 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     mistWoman->state = idle;
     mistWoman->speed = 10;
     int wAnimation = 0;
+    mistWoman->dialog = (char **) malloc(sizeof(char*)*2);
+    mistWoman->dialog[0] = (char *) malloc(sizeof("")+1);
+    mistWoman->dialog[0] = ""; 
+    mistWoman->dialog[1] = (char *) malloc(sizeof("Hello")+1);
+    mistWoman->dialog[1] = "Hello";
+    int actualDialog = 0;
 
-    mistWoman->dialog = malloc(sizeof(*screenTex));
-    mist.text = malloc(sizeof("Detalhes"));
-    menuTex[0].text = "Detalhes";
-    menuTex[0].font = font;
-    menuTex[0].color = orange;
-    menuTex[0].rect = (SDL_Rect) {340,100,600,200};
-    
     background * gramado = malloc(sizeof(*gramado));
     gramado->tileset = IMG_LoadTexture(ren,"images/grass_tileset.png");    
     for (i=0; i<18; i++)
         for (j=0; j<32; j++)
             gramado->sprite_cuts[i][j] = (SDL_Rect) {0,rand()%3*16,16,16}; 
-
-    
-    SDL_Point playerbox = {player->rect.x, player->rect.y};
-    SDL_Point playerbox2 = {player->rect.x + player->rect.w, player->rect.y + player->rect.h};
 
     Uint32 antes = SDL_GetTicks();
      
@@ -179,6 +178,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, mistWoman->sprite, &mistWoman->sprite_cut, &mistWoman->rect);
+        stringRGBA(ren, mistWoman->rect.x+mistWoman->rect.w-5, mistWoman->rect.y, mistWoman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
         SDL_RenderPresent(ren);
 
@@ -217,9 +217,9 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                         case SDLK_LSHIFT:
                             player->speed = 10;
                             break;
-                        case SDLK_KP_ENTER:
-                            if (SDL_PointInRect(&playerbox, &mistWoman->rect) || SDL_PointInRect(&playerbox2 , &mistWoman->rect))
-                                stringRGBA(ren, mistWoman->rect.x+mistWoman->rect.w-5, mistWoman->rect.y, mistWoman->dialog, 0x00,0x00,0x00,0xFF);
+                        case SDLK_RETURN:
+                            if (RectInRect(&player->rect, &mistWoman->rect))
+               		            actualDialog = 1;
                             break;
                        case SDLK_ESCAPE:
                             *screen = menu;
@@ -244,6 +244,9 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         
     }
     
+    free(mistWoman);
+    free(mistWoman->dialog);
+
 }
 
 int main (int argc, char* args[]){
@@ -284,7 +287,3 @@ int main (int argc, char* args[]){
     SDL_Quit();
 
 }
-
-
-
-
