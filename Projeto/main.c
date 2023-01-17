@@ -1,17 +1,10 @@
 #include <assert.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
-
-typedef struct {
-    SDL_Rect rect;
-    SDL_Texture * sprite;
-    SDL_Rect sprite_cut;
-    int state;
-    int speed;
-} character;
 
 typedef struct {
     char * text;
@@ -19,6 +12,21 @@ typedef struct {
     SDL_Color color;
     SDL_Rect rect;
 } screenTex;
+
+typedef struct {
+    SDL_Rect rect;
+    SDL_Texture * sprite;
+    SDL_Rect sprite_cut;
+    screenTex * dialog;
+    int state;
+    int speed;
+} character;
+
+typedef struct {
+    SDL_Rect tile;
+    SDL_Texture * tileset;
+    SDL_Rect sprite_cuts[18][32];
+} background;
 
 enum states {idle=0,walking,pushing,talking,interacting};
 enum tela {menu=0,telaInicial,fim};
@@ -121,23 +129,63 @@ void menuRen (SDL_Renderer* ren, int * screen, int * espera) {
     
 }
 
+void drawBackground(SDL_Renderer* ren, background * bg){
+    int i, j; 
+    bg->tile = (SDL_Rect) {0, 0, 40, 40};
+    for (i=0; i<18; i++) {
+        for (j=0; j<32; j++) {
+            SDL_RenderCopy(ren, bg->tileset, &bg->sprite_cuts[i][j], &bg->tile);
+            bg->tile.x = (bg->tile.x + 40) % 1280;    
+        } bg->tile.y += 40;
+    }
+}
+
 void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, character * player) {
 
+    int i, j;
+
     int w, h; SDL_GetWindowSize(win, &w, &h);
+
+    character * mistWoman = malloc(sizeof(*mistWoman));
+    mistWoman->rect = (SDL_Rect) {256, 256, 64, 64};
+    mistWoman->sprite = IMG_LoadTexture(ren, "images/woman_idle.png");
+    mistWoman->sprite_cut = (SDL_Rect) {0, 0, 37, 46}; 
+    mistWoman->state = idle;
+    mistWoman->speed = 10;
+    int wAnimation = 0;
+
+    mistWoman->dialog = malloc(sizeof(*screenTex));
+    mist.text = malloc(sizeof("Detalhes"));
+    menuTex[0].text = "Detalhes";
+    menuTex[0].font = font;
+    menuTex[0].color = orange;
+    menuTex[0].rect = (SDL_Rect) {340,100,600,200};
     
+    background * gramado = malloc(sizeof(*gramado));
+    gramado->tileset = IMG_LoadTexture(ren,"images/grass_tileset.png");    
+    for (i=0; i<18; i++)
+        for (j=0; j<32; j++)
+            gramado->sprite_cuts[i][j] = (SDL_Rect) {0,rand()%3*16,16,16}; 
+
+    
+    SDL_Point playerbox = {player->rect.x, player->rect.y};
+    SDL_Point playerbox2 = {player->rect.x + player->rect.w, player->rect.y + player->rect.h};
+
     Uint32 antes = SDL_GetTicks();
      
     while (*screen == telaInicial){
     
         SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
         SDL_RenderClear(ren);
+        drawBackground(ren, gramado);
+        SDL_RenderCopy(ren, mistWoman->sprite, &mistWoman->sprite_cut, &mistWoman->rect);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
         SDL_RenderPresent(ren);
-        
+
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
         SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
         antes = SDL_GetTicks();
-        
+    
         if (isevt){
              switch (evt.type){
                 case SDL_KEYDOWN: 
@@ -169,6 +217,10 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                         case SDLK_LSHIFT:
                             player->speed = 10;
                             break;
+                        case SDLK_KP_ENTER:
+                            if (SDL_PointInRect(&playerbox, &mistWoman->rect) || SDL_PointInRect(&playerbox2 , &mistWoman->rect))
+                                stringRGBA(ren, mistWoman->rect.x+mistWoman->rect.w-5, mistWoman->rect.y, mistWoman->dialog, 0x00,0x00,0x00,0xFF);
+                            break;
                        case SDLK_ESCAPE:
                             *screen = menu;
                             break;
@@ -182,7 +234,13 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                         *screen = fim;
                     break;
             } 
-        } else *espera = 20;
+        } else {
+            *espera = 20;
+            if (++wAnimation == mistWoman->speed){
+                mistWoman->sprite_cut.x = (mistWoman->sprite_cut.x + 37) % 259;
+                wAnimation = 0;
+            } 
+        }
         
     }
     
