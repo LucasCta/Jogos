@@ -1,9 +1,3 @@
-typedef struct {
-    SDL_Rect tile;
-    SDL_Texture * tileset;
-    SDL_Rect sprite_cuts[18][32];
-} background;
-
 void drawBackground(SDL_Renderer* ren, background * bg){
     int i, j; 
     bg->tile = (SDL_Rect) {0, 0, 40, 40};

@@ -5,13 +5,15 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
     absToRelative(&player->rect);
 
+    #include "../objects/house.c"
     #include "../objects/mysteriousWoman.c"
     #include "../objects/screenBorders.c"
     #include "../objects/gramado.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
-    addNode(objects, mistWoman->rect);
+    addNode(objects, mystWoman->rect);
+    addNode(objects, strangeHouse->rect);
     
 	Uint32 antes = SDL_GetTicks();
      
@@ -19,9 +21,10 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
-        SDL_RenderCopy(ren, mistWoman->sprite, &mistWoman->sprite_cut, &mistWoman->rect);
-        stringRGBA(ren, mistWoman->rect.x+mistWoman->rect.w-5, mistWoman->rect.y, mistWoman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
+        SDL_RenderCopy(ren, mystWoman->sprite, &mystWoman->sprite_cut, &mystWoman->rect);
+        stringRGBA(ren, mystWoman->rect.x+mystWoman->rect.w-5, mystWoman->rect.y, mystWoman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+        SDL_RenderCopy(ren, strangeHouse->sprite, &strangeHouse->sprite_cut, &strangeHouse->rect);
         SDL_RenderPresent(ren);
     
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
@@ -38,11 +41,11 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
              } 
         } else {
             *espera = 20;
-            if (++wAnimation == mistWoman->speed){
-                mistWoman->sprite_cut.x = (mistWoman->sprite_cut.x + 37) % 259;
+            if (++wAnimation == mystWoman->speed){
+                mystWoman->sprite_cut.x = (mystWoman->sprite_cut.x + 37) % 259;
                 wAnimation = 0;
             } 
-			if (isClose(player->rect, mistWoman->rect))
+			if (isClose(player->rect, mystWoman->rect))
             	actualDialog = 1;
             for (i=telaOeste-2; i<telaLeste; i++)
                 if (isClose(player->rect, screenBorder[i]))
@@ -51,7 +54,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
   
     }
 
-	free(mistWoman);
+	free(mystWoman);
 	free(gramado);
     
 }

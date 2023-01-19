@@ -4,12 +4,24 @@
 #include <SDL2/SDL_image.h>
 
 typedef struct {
+    SDL_Rect tile;
+    SDL_Texture * tileset;
+    SDL_Rect sprite_cuts[18][32];
+} background;
+
+typedef struct {
     char * text;
     TTF_Font * font;
     SDL_Color color;
     SDL_Rect rect;
     SDL_Texture * tex;
 } screenText;
+
+typedef struct {
+    SDL_Rect rect;
+    SDL_Texture * sprite;
+    SDL_Rect sprite_cut;
+} object;
 
 typedef struct {
     SDL_Rect rect;
