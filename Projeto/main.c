@@ -20,7 +20,7 @@ typedef struct {
     int speed;
 } character;
 
-enum tela {menu=0,telaInicial,fim};
+enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaSul,telaLeste,fim};
 enum states {idle=0,walking,pushing,talking,interacting};
 
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
@@ -29,10 +29,13 @@ enum states {idle=0,walking,pushing,talking,interacting};
 #include "source/event_handler.c"
 #include "source/collision_handler.c"
 #include "source/background_renderer.c"
-#include "source/colors.c"
 
-#include "source/menu.c"
-#include "source/telainicial.c"
+#include "source/screens/menu.c"
+#include "source/screens/telainicial.c"
+#include "source/screens/telaN.c"
+#include "source/screens/telaS.c"
+#include "source/screens/telaL.c"
+#include "source/screens/telaO.c"
 
 int main (int argc, char* args[]){
 
@@ -63,9 +66,15 @@ int main (int argc, char* args[]){
                 menuRen(ren,&screen);
             case telaInicial:  
                 telaInicialRen(ren,win,&screen,&espera,player);
-            case fim:
-                //telaFinalRen();
-                break;
+            case telaNorte:
+                telaNorteRen(ren,win,&screen,&espera,player);
+            case telaSul:
+                telaSulRen(ren,win,&screen,&espera,player);
+            case telaLeste:
+                telaLesteRen(ren,win,&screen,&espera,player);
+            case telaOeste:
+                telaOesteRen(ren,win,&screen,&espera,player);
+
         } 
     }
 

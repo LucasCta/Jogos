@@ -2,7 +2,11 @@ void menuRen (SDL_Renderer* ren, int * screen) {
 
     int i;
     SDL_Point mouse;
-    
+
+    SDL_Color orange = {0xF6,0x6A,0x03,0xFF}; 
+    SDL_Color black = {0x00,0x00,0x00,0xFF};
+    SDL_Color grey = {125,125,125,125};
+
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("fonts/zk.ttf", 100);
     

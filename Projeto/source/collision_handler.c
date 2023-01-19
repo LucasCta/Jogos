@@ -25,19 +25,24 @@ collider addNode(collider head, SDL_Rect newCollider){
     } return head;
 }
 
-//DELETE NODE
+//collider deleteNode(collider head, SDL_Rect delCollider){}
 
-int collision(SDL_Rect * p, SDL_Rect * r) {
-    return (!(p->x + p->w < r->x || p->x > r->x + r->w)&&!(p->y + p->h < r->y || p->y > r->y + r->h));
-}
+//int collision(SDL_Rect * p, SDL_Rect * r) { return (!(p->x + p->w < r->x || p->x > r->x + r->w)&&!(p->y + p->h < r->y || p->y > r->y + r->h)); }
 
 int checkCollisions(SDL_Rect p, collider head, int distancia, int direction){
-    collider prox; prox = head;
+    collider prox; prox = head; 
+    SDL_Rect temp;
+    if (direction == 0) p.y += distancia;
+    else if (direction == 1) p.x += distancia;
     while (prox != NULL){
-        if (direction == 0) p.x += distancia; 
-        if (direction == 1) p.y += distancia;
-        if (collision (&p, &prox->rect)) return 1;
+        if (SDL_IntersectRect(&p, &prox->rect, &temp)) return 1;
         prox = prox->next;
     } return 0;
 }
 
+int isClose(SDL_Rect p, SDL_Rect c){
+    SDL_Rect temp;
+    p.x -= 10; p.w += 20;
+    p.y -= 10; p.h += 20;
+    return SDL_IntersectRect(&p, &c, &temp);
+}
