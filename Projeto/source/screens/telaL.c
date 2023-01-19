@@ -3,9 +3,8 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     int i, j, w, h; 
     SDL_GetWindowSize(win, &w, &h);
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
-
-    player->rect.x = 80;
-
+    absToRelative(&player->rect);
+    
     #include "../objects/gramado.c"
     #include "../objects/screenBorders.c"
 
@@ -15,7 +14,7 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     Uint32 antes = SDL_GetTicks();
      
     while (*screen == telaLeste){
-    
+
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
@@ -25,7 +24,7 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
         antes = SDL_GetTicks();
     
-	if (isevt){
+        if (isevt){
              switch (evt.type){
                 #include "../player_controls.c"
                 case SDL_WINDOWEVENT:
@@ -33,8 +32,12 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
                         *screen = fim;
                     break;
              } 
-        } else *espera = 20;
-
+        } else {
+            *espera = 20;
+            if (isClose(player->rect, screenBorder[telaOeste-2]))
+                *screen = telaInicial;
+        }
+        
     }
 
    free(gramado);

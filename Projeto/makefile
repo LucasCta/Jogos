@@ -7,4 +7,4 @@ CC_FLAGS = -lSDL2\
 all: jogo
 
 jogo: 
-	gcc -o detalhes.exe main.c $(CC_FLAGS)
+	gcc -o detalhes main.c $(CC_FLAGS)

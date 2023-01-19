@@ -20,7 +20,7 @@ typedef struct {
     int speed;
 } character;
 
-enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaSul,telaLeste,fim};
+enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,fim};
 enum states {idle=0,walking,pushing,talking,interacting};
 
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
@@ -29,6 +29,7 @@ enum states {idle=0,walking,pushing,talking,interacting};
 #include "source/event_handler.c"
 #include "source/collision_handler.c"
 #include "source/background_renderer.c"
+#include "source/position_converter.c"
 
 #include "source/screens/menu.c"
 #include "source/screens/telainicial.c"

@@ -3,6 +3,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     int i, j, w, h; 
     SDL_GetWindowSize(win, &w, &h);
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
+    absToRelative(&player->rect);
 
     #include "../objects/mysteriousWoman.c"
     #include "../objects/screenBorders.c"
@@ -41,13 +42,11 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
                 mistWoman->sprite_cut.x = (mistWoman->sprite_cut.x + 37) % 259;
                 wAnimation = 0;
             } 
-	        if (isClose(player->rect, mistWoman->rect))
+			if (isClose(player->rect, mistWoman->rect))
             	actualDialog = 1;
             for (i=telaOeste-2; i<telaLeste; i++)
-                if (isClose(player->rect, screenBorder[i])){
-                    *screen = i+2;            
-                    printf("%d",*screen);   
-                }
+                if (isClose(player->rect, screenBorder[i]))
+                    *screen = i+2;
         }
   
     }

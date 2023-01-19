@@ -3,8 +3,7 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     int i, j, w, h; 
     SDL_GetWindowSize(win, &w, &h);
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
-
-    player->rect.y = 640;
+    absToRelative(&player->rect);
 
     #include "../objects/gramado.c"
     #include "../objects/screenBorders.c"
@@ -33,7 +32,11 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
                         *screen = fim;
                     break;
              } 
-        } else *espera = 20;
+        } else {
+            *espera = 20;
+            if (isClose(player->rect, screenBorder[telaSul-2]))
+                *screen = telaInicial;
+        }
 
     }
     
