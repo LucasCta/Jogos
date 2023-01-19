@@ -8,6 +8,7 @@ typedef struct {
     TTF_Font * font;
     SDL_Color color;
     SDL_Rect rect;
+    SDL_Texture * tex;
 } screenText;
 
 typedef struct {
@@ -28,6 +29,7 @@ enum states {idle=0,walking,pushing,talking,interacting};
 #include "source/event_handler.c"
 #include "source/collision_handler.c"
 #include "source/background_renderer.c"
+#include "source/colors.c"
 
 #include "source/menu.c"
 #include "source/telainicial.c"
@@ -58,7 +60,7 @@ int main (int argc, char* args[]){
     while (screen < fim) {
         switch (screen) {
             case menu:
-                menuRen(ren,&screen,&espera);
+                menuRen(ren,&screen);
             case telaInicial:  
                 telaInicialRen(ren,win,&screen,&espera,player);
             case fim:

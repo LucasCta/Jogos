@@ -25,6 +25,8 @@ collider addNode(collider head, SDL_Rect newCollider){
     } return head;
 }
 
+//DELETE NODE
+
 int collision(SDL_Rect * p, SDL_Rect * r) {
     return (!(p->x + p->w < r->x || p->x > r->x + r->w)&&!(p->y + p->h < r->y || p->y > r->y + r->h));
 }
