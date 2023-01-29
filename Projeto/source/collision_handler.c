@@ -42,7 +42,7 @@ int checkCollisions(SDL_Rect p, collider head, int distancia, int direction){
 
 int isClose(SDL_Rect p, SDL_Rect c){
     SDL_Rect temp;
-    p.x -= 10; p.w += 20;
-    p.y -= 10; p.h += 20;
+    p.x -= 7; p.w += 14;
+    p.y -= 7; p.h += 14;
     return SDL_IntersectRect(&p, &c, &temp);
 }

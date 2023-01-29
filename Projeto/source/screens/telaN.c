@@ -5,7 +5,7 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
     absToRelative(&player->rect);
 
-    #include "../objects/gramado.c"
+    #include "../objects/areia.c"
     #include "../objects/screenBorders.c"
 
     struct colliders * objects = createNode(); 

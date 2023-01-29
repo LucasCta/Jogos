@@ -43,7 +43,7 @@ void menuRen (SDL_Renderer* ren, int * screen) {
         } SDL_RenderPresent(ren);
 
 	    SDL_Event evt;
-        if (SDL_WaitEvent(&evt)){
+        if (SDL_WaitEventTimeout(&evt,200)){
             switch (evt.type) {
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
