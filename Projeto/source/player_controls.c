@@ -1,3 +1,8 @@
+case SDL_KEYUP:
+    if (evt.key.keysym.sym == SDLK_LSHIFT)
+	player->speed = 5;
+    break;
+
 case SDL_KEYDOWN: 
 
     switch (evt.key.keysym.sym){
@@ -42,10 +47,7 @@ case SDL_KEYDOWN:
 	        *screen = menu;
 	        break;
 
-    } break;
+    
 
-case SDL_KEYUP:
-    if (evt.key.keysym.sym == SDLK_LSHIFT)
-	player->speed = 5;
-    break;
+
 

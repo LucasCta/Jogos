@@ -7,6 +7,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
 
     #include "../objects/terra.c"
     #include "../objects/screenBorders.c"
+    #include "../objects/peixe.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
@@ -18,6 +19,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+	if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
         SDL_RenderPresent(ren);
 
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
@@ -27,6 +29,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
 	if (isevt){
              switch (evt.type){
                 #include "../player_controls.c"
+		} break;
                 case SDL_WINDOWEVENT:
                     if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
                         *screen = fim;
@@ -39,7 +42,5 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         }
     
    }
-
-   free(gramado);
 
 }

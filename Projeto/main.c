@@ -32,6 +32,9 @@ typedef struct {
     int speed;
 } character;
 
+enum itens {nada=0,peix,chave,lampada};
+int itensEncontrados = 0;
+
 enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,fim};
 enum states {idle=0,walking,pushing,talking,interacting};
 
@@ -68,10 +71,10 @@ int main (int argc, char* args[]){
     player->sprite_cut = (SDL_Rect) {0, 512, 64, 64};
     player->state = idle;
     player->speed = 5;
-    
+   
     int screen = menu;
     int espera = 100;
-    
+
     /* EVT LOOP */
     while (screen < fim) {
         switch (screen) {
@@ -92,7 +95,6 @@ int main (int argc, char* args[]){
     }
 
     /* FINALIZACAO */
-    free(player);
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(win);
     SDL_Quit();

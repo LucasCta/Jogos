@@ -70,6 +70,5 @@ void menuRen (SDL_Renderer* ren, int * screen) {
     }
     
     TTF_CloseFont(font);
-    free(menuText);
     
 }
