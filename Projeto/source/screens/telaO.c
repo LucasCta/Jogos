@@ -10,6 +10,8 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     #include "../objects/oldMan.c"
     #include "../objects/peixe.c"
     #include "../objects/chave.c"
+    #include "../objects/semente.c"
+    #include "../objects/fruto.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
@@ -23,10 +25,12 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
-        SDL_RenderCopy(ren, oldman->sprite, &oldman->sprite_cut, &oldman->rect);
+        if (itensEncontrados <= chav) SDL_RenderCopy(ren, oldman->sprite, &oldman->sprite_cut, &oldman->rect);
 	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
-        stringRGBA(ren, oldman->rect.x+oldman->rect.w-5, oldman->rect.y, oldman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
+	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);
+	    if (itensEncontrados == frut) SDL_RenderCopy(ren,fruto->sprite,&fruto->sprite_cut, &fruto->rect);
+        if (itensEncontrados <= chav) stringRGBA(ren, oldman->rect.x+oldman->rect.w-5, oldman->rect.y, oldman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
         SDL_RenderPresent(ren);
 
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));

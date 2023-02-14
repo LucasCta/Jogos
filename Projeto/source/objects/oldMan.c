@@ -1,5 +1,5 @@
 character * oldman = malloc(sizeof(*oldman));
-oldman->rect = (SDL_Rect) {300, 256, 64, 64};
+oldman->rect = (SDL_Rect) {150, 300, 64, 64};
 oldman->sprite = IMG_LoadTexture(ren, "images/oldman-idle.png");
 oldman->sprite_cut = (SDL_Rect) {0, 0, 37, 46}; 
 oldman->state = idle;

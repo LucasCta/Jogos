@@ -32,11 +32,11 @@ typedef struct {
     int speed;
 } character;
 
-enum itens {nada=0,peix,chav,semente,fruto};
-int itensEncontrados = 0;
+enum itens {nada=0,peix,chav,sement,wfrut0,wfrut1,wfrut2,frut,f};
+int itensEncontrados = nada;
 
-enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,fim};
-enum states {idle=0,walking,pushing,talking,interacting};
+enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,telaFinal,hous,fim};
+enum states {idle=0,walking,pushing,talking,waiting,interacting};
 
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
@@ -52,6 +52,8 @@ enum states {idle=0,walking,pushing,talking,interacting};
 #include "source/screens/telaS.c"
 #include "source/screens/telaL.c"
 #include "source/screens/telaO.c"
+#include "source/screens/telaHouse.c"
+#include "source/screens/telaFinal.c"
 
 int main (int argc, char* args[]){
 
@@ -101,6 +103,13 @@ int main (int argc, char* args[]){
             case telaOeste:
                 telaOesteRen(ren,win,&screen,&espera,player);
                 screenBef = telaOeste;
+                break;
+            case telaFinal:
+                telaFinalRen(ren,win,&screen,&espera,player);
+                break;
+            case hous:
+                telaHouseRen(ren,win,&screen,&espera,player);
+                screenBef = hous;
                 break;
         } 
     }

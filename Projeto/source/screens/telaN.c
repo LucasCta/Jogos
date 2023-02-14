@@ -9,6 +9,8 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     #include "../objects/screenBorders.c"
     #include "../objects/peixe.c"
     #include "../objects/chave.c"
+    #include "../objects/semente.c"
+    #include "../objects/fruto.c"
 
     SDL_Rect secret;
     if (itensEncontrados == nada){
@@ -29,6 +31,8 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
 	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
+	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);
+	    if (itensEncontrados == frut) SDL_RenderCopy(ren,fruto->sprite,&fruto->sprite_cut, &fruto->rect);
         SDL_RenderPresent(ren);
 
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
