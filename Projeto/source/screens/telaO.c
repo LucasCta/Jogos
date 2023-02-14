@@ -5,7 +5,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
     absToRelative(&player->rect);
 
-    #include "../objects/terra.c"
+    #include "../objects/gramado_verde.c"
     #include "../objects/screenBorders.c"
     #include "../objects/oldMan.c"
     #include "../objects/peixe.c"

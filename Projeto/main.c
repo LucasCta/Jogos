@@ -32,7 +32,7 @@ typedef struct {
     int speed;
 } character;
 
-enum itens {nada=0,peix,chav,lampada};
+enum itens {nada=0,peix,chav,semente,fruto};
 int itensEncontrados = 0;
 
 enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,fim};
