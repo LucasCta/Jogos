@@ -10,6 +10,7 @@ void telaSulRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, 
     #include "../objects/peixe.c"
     #include "../objects/chave.c"
     #include "../objects/bau.c"
+    #include "../objects/bau2.c"
     #include "../objects/semente.c"
     #include "../objects/fruto.c"
     #include "../objects/mochila.c"
@@ -38,12 +39,6 @@ void telaSulRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, 
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
-        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
-	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
-	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
-	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);
-	    if (itensEncontrados == frut) SDL_RenderCopy(ren,fruto->sprite,&fruto->sprite_cut, &fruto->rect);
-        if (itensEncontrados < sement) SDL_RenderCopy(ren, bau->sprite, &bau->sprite_cut, &bau->rect);
 
         SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_ADD);
         SDL_SetRenderDrawColor(ren, 0xB3, 0x8B, 0x6D, 125);
@@ -53,6 +48,15 @@ void telaSulRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, 
         SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_NONE);
         SDL_SetRenderDrawColor(ren, 0xB3, 0x8B, 0x6D, 225);
         SDL_RenderFillRect(ren, &cerca);
+
+        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
+	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
+	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
+	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);
+	    if (itensEncontrados == frut) SDL_RenderCopy(ren,fruto->sprite,&fruto->sprite_cut, &fruto->rect);
+        if (itensEncontrados < sement) SDL_RenderCopy(ren, bau->sprite, &bau->sprite_cut, &bau->rect);
+        if (itensEncontrados >= sement) SDL_RenderCopy(ren, bau2->sprite, &bau2->sprite_cut, &bau2->rect);
+
         SDL_RenderPresent(ren);
 
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));

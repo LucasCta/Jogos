@@ -75,7 +75,7 @@ int main (int argc, char* args[]){
     player->speed = 5;
    
     int screen = menu;
-    int screenBef = telaFinal;
+    int screenBef = telaInicial;
     int espera = 100;
 
     /* EVT LOOP */
