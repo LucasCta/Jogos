@@ -32,7 +32,7 @@ typedef struct {
     int speed;
 } character;
 
-enum itens {nada=0,peix,chave,lampada};
+enum itens {nada=0,peix,chav,lampada};
 int itensEncontrados = 0;
 
 enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,fim};
@@ -73,24 +73,35 @@ int main (int argc, char* args[]){
     player->speed = 5;
    
     int screen = menu;
+    int screenBef = telaInicial;
     int espera = 100;
 
     /* EVT LOOP */
     while (screen < fim) {
         switch (screen) {
             case menu:
-                menuRen(ren,&screen);
+                menuRen(ren,&screen,&screenBef);
+                break;
             case telaInicial:  
                 telaInicialRen(ren,win,&screen,&espera,player);
+                screenBef = telaInicial;
+                break;
             case telaNorte:
                 telaNorteRen(ren,win,&screen,&espera,player);
+                screenBef = telaNorte;
+                break;
             case telaSul:
                 telaSulRen(ren,win,&screen,&espera,player);
+                screenBef = telaSul;
+                break;
             case telaLeste:
                 telaLesteRen(ren,win,&screen,&espera,player);
+                screenBef = telaLeste;
+                break;
             case telaOeste:
                 telaOesteRen(ren,win,&screen,&espera,player);
-
+                screenBef = telaOeste;
+                break;
         } 
     }
 

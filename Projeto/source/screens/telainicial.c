@@ -10,11 +10,12 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     #include "../objects/screenBorders.c"
     #include "../objects/gramado.c"
     #include "../objects/peixe.c"
+    #include "../objects/chave.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
     addNode(objects, strangeHouse->rect);
-    addNode(objects, mystWoman->rect);
+    if (itensEncontrados <= peix) addNode(objects, mystWoman->rect);
     int dialogCounter = 0;
 
     Uint32 antes = SDL_GetTicks();
@@ -25,55 +26,60 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
         SDL_RenderCopy(ren, strangeHouse->sprite, &strangeHouse->sprite_cut, &strangeHouse->rect);
-        SDL_RenderCopy(ren, mystWoman->sprite, &mystWoman->sprite_cut, &mystWoman->rect);
+        if (itensEncontrados <= peix) SDL_RenderCopy(ren, mystWoman->sprite, &mystWoman->sprite_cut, &mystWoman->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren, peixe->sprite,&peixe->sprite_cut, &peixe->rect);
-            stringRGBA(ren, mystWoman->rect.x+mystWoman->rect.w-5, mystWoman->rect.y, mystWoman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
+	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
+        if (itensEncontrados <= peix) stringRGBA(ren, mystWoman->rect.x+mystWoman->rect.w-5, mystWoman->rect.y, mystWoman->dialog[actualDialog], 0x00,0x00,0x00,0xFF);
 
-            SDL_RenderPresent(ren);
-        
-            *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
-            SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
-            antes = SDL_GetTicks();
+        SDL_RenderPresent(ren);
     
-            if (isevt){
-                 switch (evt.type){
-                    #include "../player_controls.c"
-		            } break;
-                    case SDL_WINDOWEVENT:
-                        if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
-                            *screen = fim;
-                        break;
-                 } 
-            } else {
-                *espera = 20;
-                if (++wAnimation == mystWoman->speed){
-                    mystWoman->sprite_cut.x = (mystWoman->sprite_cut.x + 37) % 259;
-                    wAnimation = 0;
+        *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
+        SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
+        antes = SDL_GetTicks();
+
+        if (isevt){
+                switch (evt.type){
+                #include "../player_controls.c"
+                case SDLK_x:     
+                    if (itensEncontrados == chav) 
+                        if (isClose(player->rect, strangeHouse->rect))
+                                *screen = telaSul;
+                } break;
+                case SDL_WINDOWEVENT:
+                    if (SDL_WINDOWEVENT_CLOSE == evt.window.event)
+                        *screen = fim;
+                    break;
                 } 
-	            if (isClose(player->rect, mystWoman->rect)) {
-                    switch (itensEncontrados){
-		                case nada:
-                            if (actualDialog == 0) actualDialog = 1;
-		                    if (actualDialog > 0 && actualDialog < 4) {
-                                dialogCounter += 1; 
-                                dialogCounter %= 200;
-                                if(dialogCounter == 199)
-                                    actualDialog += 1; 
-                            } break;
-                        case peix:
-                            if (actualDialog == 0) actualDialog = 5;
-                            if (actualDialog >=  5 && actualDialog < 7) { 
-                                dialogCounter += 1; 
-                                dialogCounter %= 200;
-                                if(dialogCounter == 199)
-                                    actualDialog += 1; 
-                            } break;
-                     }
-                }
-                for (i=telaOeste-2; i<telaLeste; i++)
-                    if (isClose(player->rect, screenBorder[i]))
-                        *screen = i+2;
-           }
+        } else {
+            *espera = 20;
+            if (++wAnimation == mystWoman->speed){
+                mystWoman->sprite_cut.x = (mystWoman->sprite_cut.x + 37) % 259;
+                wAnimation = 0;
+            } 
+            if (isClose(player->rect, mystWoman->rect)) {
+                switch (itensEncontrados){
+                    case nada:
+                        if (actualDialog == 0) actualDialog = 1;
+                        if (actualDialog > 0 && actualDialog < 4) {
+                            dialogCounter += 1; 
+                            dialogCounter %= 200;
+                            if(dialogCounter == 199)
+                                actualDialog += 1; 
+                        } break;
+                    case peix:
+                        if (actualDialog == 0) actualDialog = 5;
+                        if (actualDialog >=  5 && actualDialog < 7) { 
+                            dialogCounter += 1; 
+                            dialogCounter %= 200;
+                            if(dialogCounter == 199)
+                                actualDialog += 1; 
+                        } break;
+                    }
+            }
+            for (i=telaOeste-2; i<telaLeste; i++)
+                if (isClose(player->rect, screenBorder[i]))
+                    *screen = i+2;
+        }
   
     }
     

@@ -1,4 +1,4 @@
-void menuRen (SDL_Renderer* ren, int * screen) {
+void menuRen (SDL_Renderer* ren, int * screen, int * screenBef) {
 
     int i;
     SDL_Point mouse;
@@ -31,7 +31,9 @@ void menuRen (SDL_Renderer* ren, int * screen) {
     menuText[2].font = font;
     menuText[2].color = grey;
     menuText[2].rect = (SDL_Rect) {540,500,250,200};
-    
+
+    SDL_SetRenderDrawColor(ren, 0x46, 0x29, 0x5A, 255);
+
     while (*screen == menu){
     
         SDL_RenderClear(ren);   
@@ -60,7 +62,7 @@ void menuRen (SDL_Renderer* ren, int * screen) {
                 case SDL_MOUSEBUTTONDOWN:
                     SDL_GetMouseState(&mouse.x, &mouse.y);
                     if (SDL_EnclosePoints(&mouse, 1, &menuText[1].rect, NULL))
-                        *screen = telaInicial;
+                        *screen = *screenBef;
                     else if (SDL_EnclosePoints(&mouse, 1, &menuText[2].rect, NULL))
                         *screen = fim;
                     break;

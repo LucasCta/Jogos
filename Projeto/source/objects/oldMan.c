@@ -1,0 +1,20 @@
+character * oldman = malloc(sizeof(*oldman));
+oldman->rect = (SDL_Rect) {300, 256, 64, 64};
+oldman->sprite = IMG_LoadTexture(ren, "images/oldman-idle.png");
+oldman->sprite_cut = (SDL_Rect) {0, 0, 37, 46}; 
+oldman->state = idle;
+oldman->speed = 10;
+int wAnimation = 0;
+
+oldman->dialog = (char **) malloc(sizeof(char*)*10);
+oldman->dialog[0] = (char *) malloc(sizeof("")+1);
+oldman->dialog[0] = ""; 
+oldman->dialog[1] = (char *) malloc(sizeof("Volte aqui quando tiver algo de interessante pra mim")+1);
+oldman->dialog[1] = "Volte aqui quando tiver algo de interessante pra mim"; 
+oldman->dialog[2] = (char *) malloc(sizeof("Opa")+1);
+oldman->dialog[2] = "Opa"; 
+oldman->dialog[3] = (char *) malloc(sizeof("Onde conseguiu essa belezinha?")+1);
+oldman->dialog[3] = "Onde conseguiu essa belezinha?"; 
+oldman->dialog[4] = (char *) malloc(sizeof("De ela aqui e tome isto")+1);
+oldman->dialog[4] = "De ela aqui e tome isto"; 
+int actualDialog = 0;

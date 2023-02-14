@@ -8,6 +8,7 @@ void telaSulRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, 
     #include "../objects/gramado_verde.c"
     #include "../objects/screenBorders.c"
     #include "../objects/peixe.c"
+    #include "../objects/chave.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
@@ -19,7 +20,8 @@ void telaSulRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera, 
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
-	if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
+	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
+	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
         SDL_RenderPresent(ren);
 
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
