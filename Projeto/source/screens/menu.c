@@ -9,6 +9,7 @@ void menuRen (SDL_Renderer* ren, int * screen, int * screenBef) {
 
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("fonts/zk.ttf", 100);
+    TTF_Font *font2 = TTF_OpenFont("fonts/enchantedland.otf", 100);
     
     SDL_SetRenderDrawColor(ren, 0xFF,0xFF,0xFF,0x00);
 
@@ -18,19 +19,19 @@ void menuRen (SDL_Renderer* ren, int * screen, int * screenBef) {
     menuText[0].text = "Detalhes";
     menuText[0].font = font;
     menuText[0].color = orange;
-    menuText[0].rect = (SDL_Rect) {340,100,600,200};
+    menuText[0].rect = (SDL_Rect) {350,100,600,200};
     
     menuText[1].text = malloc(sizeof("Jogar"));
     menuText[1].text = "Jogar";
-    menuText[1].font = font;
+    menuText[1].font = font2;
     menuText[1].color = grey;
-    menuText[1].rect = (SDL_Rect) {540,300,250,200};    
+    menuText[1].rect = (SDL_Rect) {540,330,250,150};    
     
     menuText[2].text = malloc(sizeof("Sair"));
     menuText[2].text = "Sair";
-    menuText[2].font = font;
+    menuText[2].font = font2;
     menuText[2].color = grey;
-    menuText[2].rect = (SDL_Rect) {540,500,250,200};
+    menuText[2].rect = (SDL_Rect) {540,500,250,150};
 
     SDL_SetRenderDrawColor(ren, 0x46, 0x29, 0x5A, 255);
 
@@ -72,5 +73,6 @@ void menuRen (SDL_Renderer* ren, int * screen, int * screenBef) {
     }
     
     TTF_CloseFont(font);
+    TTF_CloseFont(font2);
     
 }

@@ -32,7 +32,7 @@ typedef struct {
     int speed;
 } character;
 
-enum itens {nada=0,peix,chav,sement,wfrut0,wfrut1,wfrut2,frut,f};
+enum itens {nada=0,peix,chav,sement,wfrut,wfrut0,wfrut1,wfrut2,frut,f};
 int itensEncontrados = nada;
 
 enum tela {menu=0,telaInicial,telaOeste,telaNorte,telaLeste,telaSul,telaFinal,hous,fim};
@@ -75,7 +75,7 @@ int main (int argc, char* args[]){
     player->speed = 5;
    
     int screen = menu;
-    int screenBef = telaInicial;
+    int screenBef = telaFinal;
     int espera = 100;
 
     /* EVT LOOP */

@@ -12,6 +12,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     #include "../objects/chave.c"
     #include "../objects/semente.c"
     #include "../objects/fruto.c"
+    #include "../objects/mochila.c"
 
     struct colliders * objects = createNode(); 
     for (i=0; i<4; i++) addNode(objects, screenBorder[i]);
@@ -25,6 +26,7 @@ void telaOesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
         if (itensEncontrados <= chav) SDL_RenderCopy(ren, oldman->sprite, &oldman->sprite_cut, &oldman->rect);
 	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);

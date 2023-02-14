@@ -10,6 +10,7 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     #include "../objects/peixe.c"
     #include "../objects/chave.c"
     #include "../objects/semente.c"
+    #include "../objects/mochila.c"
     #include "../objects/fruto.c"
 
     SDL_Rect secret;
@@ -29,6 +30,7 @@ void telaNorteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
 	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
 	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);

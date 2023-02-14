@@ -13,6 +13,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
     #include "../objects/chave.c"
     #include "../objects/semente.c"
     #include "../objects/fruto.c"
+    #include "../objects/mochila.c"
 
     if (itensEncontrados == frut) {
         mystWoman->rect.x = 600;
@@ -34,6 +35,7 @@ void telaInicialRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espe
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
         SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
         if (itensEncontrados < frut) SDL_RenderCopy(ren, strangeHouse->sprite, &strangeHouse->sprite_cut, &strangeHouse->rect);
         if (itensEncontrados <= peix || itensEncontrados >= frut) SDL_RenderCopy(ren, mystWoman->sprite, &mystWoman->sprite_cut, &mystWoman->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren, peixe->sprite,&peixe->sprite_cut, &peixe->rect);

@@ -11,9 +11,11 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
     #include "../objects/chave.c"
     #include "../objects/semente.c"
     #include "../objects/fruto.c"
+    #include "../objects/arv0.c"
     #include "../objects/arv1.c"
     #include "../objects/arv2.c"
     #include "../objects/arv3.c"
+    #include "../objects/mochila.c"
 
     SDL_Rect water = {850,210,300,300};
     struct colliders * objects = createNode(); 
@@ -27,6 +29,7 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         SDL_RenderClear(ren);
         drawBackground(ren, gramado);
 	    SDL_RenderCopy(ren, player->sprite, &player->sprite_cut, &player->rect);
+        SDL_RenderCopy(ren, mochila->sprite, &mochila->sprite_cut, &mochila->rect);
 	    if (itensEncontrados == chav) SDL_RenderCopy(ren,chave->sprite,&chave->sprite_cut, &chave->rect);
 	    if (itensEncontrados == peix) SDL_RenderCopy(ren,peixe->sprite,&peixe->sprite_cut, &peixe->rect);
 	    if (itensEncontrados == sement) SDL_RenderCopy(ren,semente->sprite,&semente->sprite_cut, &semente->rect);
@@ -42,8 +45,10 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
             SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
             SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x66, 125);
             SDL_RenderFillRect(ren, &water);
-        } SDL_RenderPresent(ren);
-
+        } 
+        if (itensEncontrados == wfrut) SDL_RenderCopy(ren,arv0->sprite,&arv0->sprite_cut, &arv0->rect);
+        SDL_RenderPresent(ren);
+        
         *espera = MAX(0, *espera - (int)(SDL_GetTicks() - antes));
         SDL_Event evt; int isevt = AUX_WaitEventTimeoutCount(&evt, espera);
         antes = SDL_GetTicks();
@@ -54,7 +59,7 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
                 case SDLK_x:
                     if (isClose(player->rect, water))
                         if (itensEncontrados == sement)
-                            itensEncontrados = wfrut0;
+                            itensEncontrados = wfrut;
                     if (isClose(player->rect, water))
                         if (itensEncontrados == wfrut2)
                             itensEncontrados = frut;
@@ -72,7 +77,7 @@ void telaLesteRen(SDL_Renderer* ren, SDL_Window* win, int * screen, int * espera
         
     }
 
-    if (itensEncontrados >= wfrut0 && itensEncontrados < wfrut2)
+    if (itensEncontrados >= wfrut && itensEncontrados < wfrut2)
         itensEncontrados ++;
 
 }  
